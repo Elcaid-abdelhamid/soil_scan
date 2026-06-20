@@ -1,0 +1,600 @@
+/* =============================================================================
+   SoilScan — design tokens
+   Thème ancré dans le sujet : strates de sol (horizons pédologiques).
+   Chaque type de sol a sa propre teinte, réutilisée partout (légende,
+   graphiques, "carottes" de confiance) pour que la couleur porte du sens.
+============================================================================= */
+
+:root {
+  --bg: #f4ecd8;
+  --bg-alt: #ebe0c6;
+  --card: #fffcf6;
+  --ink: #2b1d13;
+  --ink-soft: #6b5842;
+  --border: rgba(43, 29, 19, 0.14);
+  --border-strong: rgba(43, 29, 19, 0.28);
+
+  --terracotta: #c1531b;
+  --terracotta-dark: #9c4214;
+
+  --c-alluvial: #8c7a5b;
+  --c-arid: #ddb97a;
+  --c-black: #2e2419;
+  --c-laterite: #b5602e;
+  --c-mountain: #6b5842;
+  --c-red: #9c3b2c;
+  --c-yellow: #d9a441;
+
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+
+  --shadow-card: 0 1px 2px rgba(43, 29, 19, 0.06), 0 8px 24px -12px rgba(43, 29, 19, 0.18);
+
+  --font-display: "Fraunces", "Georgia", serif;
+  --font-body: "Work Sans", "Segoe UI", sans-serif;
+  --font-mono: "IBM Plex Mono", "Courier New", monospace;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: var(--bg);
+  background-image: radial-gradient(circle at 100% 0%, rgba(193, 83, 27, 0.06), transparent 45%),
+    radial-gradient(circle at 0% 100%, rgba(107, 88, 66, 0.07), transparent 45%);
+  background-attachment: fixed;
+  color: var(--ink);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin: 0;
+}
+
+p {
+  margin: 0;
+  line-height: 1.55;
+}
+
+button {
+  font-family: var(--font-body);
+}
+
+::selection {
+  background: var(--c-yellow);
+  color: var(--ink);
+}
+
+/* ---------------------------------------------------------------------------
+   Mise en page générale
+--------------------------------------------------------------------------- */
+
+.app-shell {
+  max-width: 1080px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 24px 64px;
+  flex: 1;
+}
+
+.site-header {
+  padding: 40px 0 0;
+}
+
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--terracotta-dark);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.eyebrow::before {
+  content: "";
+  width: 18px;
+  height: 1px;
+  background: var(--terracotta-dark);
+  display: inline-block;
+}
+
+.site-title {
+  font-size: clamp(32px, 5vw, 44px);
+  margin-top: 10px;
+}
+
+.site-subtitle {
+  margin-top: 10px;
+  max-width: 56ch;
+  color: var(--ink-soft);
+  font-size: 16px;
+}
+
+/* ---------------------------------------------------------------------------
+   Légende / strate signature — bande de strates des 7 types de sol
+   Élément signature de l'interface : un horizon pédologique, utilisé comme
+   légende couleur permanente et rappel visuel du sujet.
+--------------------------------------------------------------------------- */
+
+.strata-legend {
+  margin-top: 28px;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  display: flex;
+  height: 14px;
+  box-shadow: var(--shadow-card);
+  border: 1px solid var(--border);
+}
+
+.strata-segment {
+  flex: 1;
+  position: relative;
+}
+
+.strata-legend-labels {
+  display: flex;
+  margin-top: 8px;
+  gap: 0;
+}
+
+.strata-legend-labels .label-item {
+  flex: 1;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  color: var(--ink-soft);
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 0 2px;
+}
+
+/* ---------------------------------------------------------------------------
+   Onglets de navigation
+--------------------------------------------------------------------------- */
+
+.tab-nav {
+  display: flex;
+  gap: 4px;
+  margin-top: 36px;
+  border-bottom: 1px solid var(--border);
+}
+
+.tab-btn {
+  border: none;
+  background: none;
+  padding: 12px 4px;
+  margin-right: 28px;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--ink-soft);
+  cursor: pointer;
+  position: relative;
+  font-family: var(--font-body);
+}
+
+.tab-btn.active {
+  color: var(--ink);
+}
+
+.tab-btn.active::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 2px;
+  background: var(--terracotta);
+  border-radius: 2px;
+}
+
+.tab-section {
+  margin-top: 36px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+/* ---------------------------------------------------------------------------
+   Cartes
+--------------------------------------------------------------------------- */
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  box-shadow: var(--shadow-card);
+}
+
+.card-title {
+  font-size: 18px;
+  margin-bottom: 4px;
+}
+
+.card-subtitle {
+  color: var(--ink-soft);
+  font-size: 13.5px;
+  margin-bottom: 18px;
+}
+
+/* ---------------------------------------------------------------------------
+   Upload / dropzone
+--------------------------------------------------------------------------- */
+
+.dropzone {
+  border: 1.5px dashed var(--border-strong);
+  border-radius: var(--radius-md);
+  padding: 28px;
+  text-align: center;
+  cursor: pointer;
+  transition: border-color 0.15s ease, background 0.15s ease;
+  background: var(--bg-alt);
+}
+
+.dropzone:hover,
+.dropzone.dragging {
+  border-color: var(--terracotta);
+  background: rgba(193, 83, 27, 0.06);
+}
+
+.dropzone input {
+  display: none;
+}
+
+.dropzone-icon {
+  font-size: 28px;
+  margin-bottom: 8px;
+}
+
+.dropzone-text {
+  font-size: 14px;
+  color: var(--ink-soft);
+}
+
+.dropzone-text strong {
+  color: var(--terracotta-dark);
+}
+
+.preview-wrap {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.preview-img {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+}
+
+.preview-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.preview-filename {
+  font-size: 13.5px;
+  font-weight: 500;
+}
+
+.link-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: 13px;
+  color: var(--terracotta-dark);
+  text-decoration: underline;
+  cursor: pointer;
+  width: fit-content;
+}
+
+/* ---------------------------------------------------------------------------
+   Sélecteur de modèles
+--------------------------------------------------------------------------- */
+
+.model-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 10px;
+}
+
+.model-option {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 12px 14px;
+  cursor: pointer;
+  background: var(--card);
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.model-option:hover {
+  border-color: var(--border-strong);
+}
+
+.model-option.selected {
+  border-color: var(--terracotta);
+  background: rgba(193, 83, 27, 0.07);
+}
+
+.model-option-label {
+  font-size: 13.5px;
+  font-weight: 500;
+}
+
+.model-option-tag {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  color: var(--ink-soft);
+  margin-top: 3px;
+}
+
+/* ---------------------------------------------------------------------------
+   Bouton primaire
+--------------------------------------------------------------------------- */
+
+.primary-btn {
+  background: var(--ink);
+  color: var(--bg);
+  border: none;
+  border-radius: var(--radius-md);
+  padding: 13px 22px;
+  font-size: 14.5px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.15s ease, transform 0.1s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.primary-btn:hover:not(:disabled) {
+  background: var(--terracotta-dark);
+}
+
+.primary-btn:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.primary-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.error-banner {
+  border: 1px solid rgba(156, 59, 44, 0.35);
+  background: rgba(156, 59, 44, 0.08);
+  color: var(--terracotta-dark);
+  border-radius: var(--radius-md);
+  padding: 12px 16px;
+  font-size: 13.5px;
+}
+
+/* ---------------------------------------------------------------------------
+   "Carotte de sol" — visualisation des probabilités de prédiction
+   Élément signature : un tube vertical en strates dont l'épaisseur de
+   chaque bande encode la confiance du modèle pour la classe correspondante.
+--------------------------------------------------------------------------- */
+
+.core-sample-wrap {
+  display: flex;
+  gap: 18px;
+  align-items: flex-start;
+}
+
+.core-sample-tube {
+  width: 46px;
+  min-height: 220px;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 2px solid var(--ink);
+  display: flex;
+  flex-direction: column;
+  box-shadow: inset 0 0 0 2px rgba(255, 252, 246, 0.5);
+  flex-shrink: 0;
+}
+
+.core-sample-layer {
+  width: 100%;
+}
+
+.core-sample-legend {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.core-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+}
+
+.core-row.is-top {
+  font-weight: 600;
+}
+
+.core-swatch {
+  width: 11px;
+  height: 11px;
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+
+.core-row-name {
+  flex: 1;
+}
+
+.core-row-value {
+  font-family: var(--font-mono);
+  color: var(--ink-soft);
+  font-size: 12px;
+}
+
+/* ---------------------------------------------------------------------------
+   Résultat principal
+--------------------------------------------------------------------------- */
+
+.result-headline {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.result-headline .model-name {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--ink-soft);
+}
+
+.result-class {
+  font-family: var(--font-display);
+  font-size: 24px;
+}
+
+.confidence-pill {
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  padding: 3px 9px;
+  border-radius: 999px;
+  background: var(--ink);
+  color: var(--bg);
+}
+
+/* Grille de comparaison des 4 modèles */
+.comparison-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 16px;
+}
+
+.comparison-card {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  background: var(--bg-alt);
+}
+
+.comparison-card.is-best {
+  border-color: var(--terracotta);
+  background: rgba(193, 83, 27, 0.06);
+}
+
+.best-tag {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--terracotta-dark);
+  margin-bottom: 6px;
+  display: block;
+}
+
+/* ---------------------------------------------------------------------------
+   Dashboard
+--------------------------------------------------------------------------- */
+
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 16px;
+}
+
+.stat-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 18px;
+}
+
+.stat-value {
+  font-family: var(--font-display);
+  font-size: 28px;
+}
+
+.stat-label {
+  font-size: 12.5px;
+  color: var(--ink-soft);
+  margin-top: 4px;
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: 24px;
+}
+
+@media (max-width: 760px) {
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.report-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.report-table th,
+.report-table td {
+  text-align: left;
+  padding: 7px 8px;
+  border-bottom: 1px solid var(--border);
+}
+
+.report-table th {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--ink-soft);
+  font-weight: 500;
+}
+
+.report-table td:not(:first-child),
+.report-table th:not(:first-child) {
+  font-family: var(--font-mono);
+  text-align: right;
+}
+
+.loading-text,
+.empty-text {
+  color: var(--ink-soft);
+  font-size: 13.5px;
+}
+
+footer.site-footer {
+  text-align: center;
+  padding: 32px 0 8px;
+  color: var(--ink-soft);
+  font-size: 12.5px;
+}
